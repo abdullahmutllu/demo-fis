@@ -1,5 +1,5 @@
-# GitHub Pages: Settings → Pages → "Build and deployment" kaynağı "GitHub Actions" olmalı.
-# Repo adı vite.config.ts içindeki `repo` ile aynı olmalı (şu an: demo-fis).
+# GitHub Pages: Settings → Pages → Source: "Deploy from a branch" → branch: gh-pages, folder: / (root)
+# Bu workflow dist'i gh-pages dalına push eder; actions/deploy-pages API'si kullanılmaz (404 hatası önlenir).
 
 name: Deploy GitHub Pages
 
@@ -8,20 +8,15 @@ on:
     branches: [main]
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: pages-gh
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,19 +31,9 @@ jobs:
         run: npm run build
       - name: SPA fallback (GitHub Pages)
         run: cp dist/index.html dist/404.html
-      - uses: actions/upload-pages-artifact@v4
+      - name: Deploy to gh-pages branch
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
+          folder: dist
+          branch: gh-pages
+          clean: true

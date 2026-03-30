@@ -38,14 +38,16 @@ set GITHUB_PAGES=true&& npm run build&& npm run preview
 
 Canlı adres: [https://abdullahmutllu.github.io/demo-fis/](https://abdullahmutllu.github.io/demo-fis/)
 
-### Zorunlu: Pages kaynağını açın
+Workflow, `dist` çıktısını **`gh-pages` dalına** push eder (klasik branch yayını).
 
-Deploy hatası `Failed to create deployment … Ensure GitHub Pages has been enabled` ise **Settings** içinde Pages hiç açılmamış demektir.
+### İlk kurulum (bir kez)
 
-1. Depo: **Settings → Pages**  
+1. İlk workflow yeşil olduktan sonra: **Settings → Pages**  
    [https://github.com/abdullahmutllu/demo-fis/settings/pages](https://github.com/abdullahmutllu/demo-fis/settings/pages)
-2. **Build and deployment** bölümünde **Source** olarak **GitHub Actions** seçin (branch / “Deploy from a branch” değil).
-3. **Actions** sekmesinden son çalışmayı **Re-run all jobs** ile yeniden çalıştırın veya `main`’e yeni bir commit push edin.
+2. **Build and deployment → Source:** **Deploy from a branch** seçin.
+3. **Branch:** `gh-pages`, **folder:** `/ (root)` → **Save**.
+
+“GitHub Actions” kaynağı kullanılmaz; bu yüzden `deploy-pages` ile ilgili 404 oluşmaz.
 
 `vite.config.ts` içindeki `repo` sabiti, GitHub’daki depo adıyla aynı olmalıdır (şu an: `demo-fis`).
 
