@@ -36,13 +36,18 @@ set GITHUB_PAGES=true&& npm run build&& npm run preview
 
 ## Dağıtım (GitHub Pages)
 
-Canlı örnek: [https://abdullahmutllu.github.io/demo-fis/](https://abdullahmutllu.github.io/demo-fis/) (repo adı `demo-fis` ise).
+Canlı adres: [https://abdullahmutllu.github.io/demo-fis/](https://abdullahmutllu.github.io/demo-fis/)
 
-1. GitHub’da **New repository** → ad: `demo-fis` (vite.config.ts içindeki `repo` ile aynı olmalı).
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. `main` dalına push edin; `.github/workflows/deploy-pages.yml` derleyip yayınlar.
+### Zorunlu: Pages kaynağını açın
 
-`vite.config.ts` içindeki `repo` sabiti, GitHub’daki depo adından farklıysa güncelleyin.
+Deploy hatası `Failed to create deployment … Ensure GitHub Pages has been enabled` ise **Settings** içinde Pages hiç açılmamış demektir.
+
+1. Depo: **Settings → Pages**  
+   [https://github.com/abdullahmutllu/demo-fis/settings/pages](https://github.com/abdullahmutllu/demo-fis/settings/pages)
+2. **Build and deployment** bölümünde **Source** olarak **GitHub Actions** seçin (branch / “Deploy from a branch” değil).
+3. **Actions** sekmesinden son çalışmayı **Re-run all jobs** ile yeniden çalıştırın veya `main`’e yeni bir commit push edin.
+
+`vite.config.ts` içindeki `repo` sabiti, GitHub’daki depo adıyla aynı olmalıdır (şu an: `demo-fis`).
 
 ## Dağıtım (Vercel)
 
