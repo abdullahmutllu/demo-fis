@@ -3,7 +3,7 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { useExpenses } from '../context/ExpenseContext';
 import { useToast } from '../context/ToastContext';
 import { CATEGORIES, categoryLabel } from '../lib/categories';
-import { formatTry } from '../lib/format';
+import { formatTry, parseTryInput } from '../lib/format';
 import type { Expense } from '../types/expense';
 
 const sources: { id: 'all' | 'receipt' | 'manual'; label: string }[] = [
@@ -43,7 +43,7 @@ export default function ExpenseList() {
 
   const saveEdit = () => {
     if (!editing) return;
-    const n = Number(editAmount.replace(',', '.'));
+    const n = parseTryInput(editAmount);
     if (!Number.isFinite(n) || n <= 0) {
       show('Geçerli tutar girin.');
       return;

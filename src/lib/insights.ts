@@ -76,13 +76,30 @@ export function buildInsightBullets(expenses: Expense[], ref = new Date()): Insi
 
   if (totalPrev > 0) {
     const tDelta = ((totalThis - totalPrev) / totalPrev) * 100;
+    if (Math.abs(tDelta) < 0.05) {
+      bullets.push({
+        id: 'total',
+        tone: 'info',
+        text: `Toplam gider geçen ay ile aynı düzeyde (${formatTry(totalThis)} bu ay, ${formatTry(totalPrev)} geçen ay).`,
+      });
+    } else if (tDelta > 0) {
+      bullets.push({
+        id: 'total',
+        tone: tDelta > 8 ? 'warn' : 'info',
+        text: `Toplam gider geçen aya göre ${formatPercent(tDelta)} arttı (${formatTry(totalThis)} bu ay).`,
+      });
+    } else {
+      bullets.push({
+        id: 'total',
+        tone: tDelta < -5 ? 'ok' : 'info',
+        text: `Toplam gider geçen aya göre ${formatPercent(tDelta)} azaldı (${formatTry(totalThis)} bu ay).`,
+      });
+    }
+  } else if (totalThis > 0) {
     bullets.push({
       id: 'total',
-      tone: tDelta > 8 ? 'warn' : tDelta < -5 ? 'ok' : 'info',
-      text:
-        tDelta > 0
-          ? `Toplam gider geçen aya göre ${formatPercent(tDelta)} arttı (${formatTry(totalThis)} bu ay).`
-          : `Toplam gider geçen aya göre ${formatPercent(Math.abs(tDelta))} azaldı (${formatTry(totalThis)} bu ay).`,
+      tone: 'info',
+      text: `Bu dönem için toplam ${formatTry(totalThis)} gider kaydı görünüyor (geçen ay ile karşılaştırma için yeterli veri yok).`,
     });
   }
 

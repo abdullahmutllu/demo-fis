@@ -3,6 +3,7 @@ import { Loader2, Upload } from 'lucide-react';
 import { useExpenses } from '../context/ExpenseContext';
 import { useToast } from '../context/ToastContext';
 import { CATEGORIES } from '../lib/categories';
+import { parseTryInput } from '../lib/format';
 import { mockReceiptOcr } from '../lib/mockReceiptOcr';
 import { randomId } from '../lib/expenseStore';
 import type { Expense } from '../types/expense';
@@ -35,6 +36,10 @@ export default function ReceiptAdd() {
   }, []);
 
   const runOcr = async () => {
+    if (!preview) {
+      show('Önce fiş veya fatura görseli seçin.');
+      return;
+    }
     setLoading(true);
     try {
       const hint = file?.name ?? 'fis';
@@ -51,7 +56,7 @@ export default function ReceiptAdd() {
   };
 
   const save = () => {
-    const n = Number(amount.replace(',', '.'));
+    const n = parseTryInput(amount);
     if (!Number.isFinite(n) || n <= 0) {
       show('Geçerli bir tutar girin.');
       return;
@@ -124,7 +129,7 @@ export default function ReceiptAdd() {
           ) : null}
           <button
             type="button"
-            disabled={loading}
+            disabled={loading || !preview}
             onClick={runOcr}
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-semibold text-black shadow-lg shadow-amber-500/25 disabled:opacity-60"
           >
@@ -133,6 +138,11 @@ export default function ReceiptAdd() {
             ) : null}
             Görüntüyü analiz et (demo)
           </button>
+          {!preview ? (
+            <p className="mt-2 text-center text-[11px] text-slate-500">
+              Analiz için önce yukarıdan görsel seçin.
+            </p>
+          ) : null}
         </div>
 
         <div className="space-y-4 rounded-2xl border border-white/[0.08] bg-[#0c0c14]/80 p-5">

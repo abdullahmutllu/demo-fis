@@ -53,7 +53,7 @@ export default function Dashboard() {
           Özet
         </h1>
         <p className="mt-1 text-sm text-slate-400">
-          Bu ayki giderler ve hızlı içgörüler.
+          Bu ayın giderleri ve hızlı içgörüler.
         </p>
       </div>
 

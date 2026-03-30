@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useExpenses } from '../context/ExpenseContext';
 import { useToast } from '../context/ToastContext';
 import { CATEGORIES } from '../lib/categories';
+import { parseTryInput } from '../lib/format';
 import { randomId } from '../lib/expenseStore';
 import type { Expense } from '../types/expense';
 
@@ -18,7 +19,7 @@ export default function ManualExpense() {
   const [note, setNote] = useState('');
 
   const save = () => {
-    const n = Number(amount.replace(',', '.'));
+    const n = parseTryInput(amount);
     if (!Number.isFinite(n) || n <= 0) {
       show('Geçerli bir tutar girin.');
       return;
